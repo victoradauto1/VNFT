@@ -7,7 +7,7 @@ import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
-contract VFNT is ERC721, ERC721Burnable, ERC721Enumerable {
+contract VFNT is ERC721, ERC721Burnable, ERC721Enumerable, ERC721URIStorage {
     uint private _tokenIdCounter;
 
     constructor() ERC721("VNFT", "VNFT") {}
@@ -22,10 +22,14 @@ contract VFNT is ERC721, ERC721Burnable, ERC721Enumerable {
         return "https://victoradauto.com.br/nfts/";
     }
 
+    function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns(string memory){
+        return string.concat(super.tokenURI(tokenId), ".json");
+    }
+
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable)
+        override(ERC721, ERC721Enumerable, ERC721URIStorage)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
