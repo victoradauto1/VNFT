@@ -1,5 +1,6 @@
 import { expect} from "chai";
 import hre from "hardhat";
+import { ethers } from "hardhat";
 
 describe("VNFT", function () {
 
@@ -19,7 +20,7 @@ describe("VNFT", function () {
     it("Should has name", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
 
-      expect(await contract.name()).to.equal("VNFT", "Can't get name");
+      expect(await contract.name()).to.equal("VNFT2", "Can't get name");
     });
 
     
@@ -27,29 +28,27 @@ describe("VNFT", function () {
       const { contract, owner, otherAccount } = await deployFixture();
 
 
-      expect(await contract.symbol()).to.equal("VNFT", "Can't get symbol");
+      expect(await contract.symbol()).to.equal("VNFT2", "Can't get symbol");
     });
 
     it("Should mint", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
 
       const balance = await contract.balanceOf(owner.address);
-      const tokenId = await contract. tokenByIndex(0);
+      const tokenId = 0
       const ownerOf = await contract.ownerOf(tokenId);
-      const ownerTokenId = await contract.tokenOfOwnerByIndex(owner.address, 0);
-      const totalSupply =  await contract.totalSupply()
+       const totalSupply =  await contract.totalSupply()
 
       expect(balance).to.equal(1, "Can't mint");
-      expect(tokenId).to.equal(ownerTokenId, "Can't mint");
       expect(ownerOf).to.equal(owner.address, "Can't mint");
       expect(totalSupply).to.equal(1, "Can't mint");
     });
 
     it("Should burn", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract. tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0
       await contract.burn(tokenId);
 
       const balance = await contract.balanceOf(owner.address);
@@ -61,8 +60,8 @@ describe("VNFT", function () {
 
     it("Should burn (approved)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract.tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0;
       await contract.approve(otherAccount, tokenId);
       const instance = contract.connect(otherAccount);
 
@@ -77,8 +76,8 @@ describe("VNFT", function () {
 
     it("Should burn (approved for all)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract.tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0;
       await contract.setApprovalForAll(otherAccount.address, true);
       const instance = contract.connect(otherAccount);
 
@@ -94,81 +93,79 @@ describe("VNFT", function () {
     it("Should NOT burn (exists)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
 
-      await expect(contract.burn(0)).to.be.revertedWithCustomError(contract,"ERC721NonexistentToken" );   
+      await expect(contract.burn(0)).to.be.revertedWithCustomError(contract,"OwnerQueryForNonexistentToken" );   
     });
 
     it("Should NOT burn (permission)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract.tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0;
   
       const instance = contract.connect(otherAccount);
 
-      await expect(instance.burn(tokenId)).to.be.revertedWithCustomError(contract, "ERC721InsufficientApproval");
+      await expect(instance.burn(tokenId)).to.be.revertedWithCustomError(contract, "TransferCallerNotOwnerNorApproved");
     });
 
     it("Should has URI metadata", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
       
-      await contract.mint();
-      const tokenId = await contract.tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0;
 
-      expect(await contract.tokenURI(tokenId)).to.equal( "https://victoradauto.com.br/nfts/1.json", "Can't get URI metadata");
+      expect(await contract.tokenURI(tokenId)).to.equal( "https://victoradauto.com.br/nfts/0.json", "Can't get URI metadata");
     });
 
     it("Should NOT has URI metadata", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
      
-      await expect(contract.tokenURI(1)).to.revertedWithCustomError(contract, "ERC721NonexistentToken");
+      await expect(contract.tokenURI(1)).to.revertedWithCustomError(contract, "URIQueryForNonexistentToken");
     });
 
     it("Should transfer", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract. tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0
 
       await contract.transferFrom(owner.address, otherAccount.address, tokenId)
       
       const balanceFrom = await contract.balanceOf(owner.address);
       const balanceTo = await contract.balanceOf(otherAccount.address);
       const ownerOf = await contract.ownerOf(tokenId);
-      const ownerTokenId = await contract.tokenOfOwnerByIndex(otherAccount.address, 0);
 
       expect(balanceFrom).to.equal(0, "Can't transfer");
       expect(balanceTo).to.equal(1, "Can't transfer" );
-      expect(tokenId).to.equal(ownerTokenId, "Can't transfer");
       expect(ownerOf).to.equal(otherAccount.address, "Can't tranfer");
     });
 
     it("Should NOT transfer(permission)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract. tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0
 
       const instance = contract.connect(otherAccount);
-      await expect(instance.transferFrom(owner.address, otherAccount.address, tokenId)).to.be.revertedWithCustomError(contract, "ERC721InsufficientApproval");
+      await expect(instance.transferFrom(owner.address, otherAccount.address, tokenId)).to.be.revertedWithCustomError(contract, "TransferCallerNotOwnerNorApproved");
       
       
     });
 
     it("Should NOT transfer(exists)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await expect(contract.transferFrom(owner.address, otherAccount.address, 1)).to.be.revertedWithCustomError(contract, "ERC721NonexistentToken");
+      await expect(contract.transferFrom(owner.address, otherAccount.address, 1)).to.be.revertedWithCustomError(contract, "OwnerQueryForNonexistentToken");
 
     });
 
     it("Should emit transfer", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract. tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0
 
       expect(await contract.transferFrom(owner.address, otherAccount.address, tokenId)).to.emit(contract, "transfer").withArgs(owner.address, otherAccount.address, tokenId);
     });
 
     it("Should transfer (approved)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract. tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0
 
       const approve = await contract.approve(otherAccount.address, tokenId);
       const approved = await contract.getApproved(tokenId);
@@ -185,8 +182,8 @@ describe("VNFT", function () {
 
     it("Should clean approvals after transfer", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract. tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0
 
       await contract.approve(otherAccount.address, tokenId);
 
@@ -200,8 +197,8 @@ describe("VNFT", function () {
 
     it("Should transfer (approved for all)", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
-      await contract.mint();
-      const tokenId = await contract. tokenByIndex(0);
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+      const tokenId = 0
 
       const approve =  await contract.setApprovalForAll(otherAccount.address, true);
       const approved = await contract.isApprovedForAll(owner.address, otherAccount.address);
@@ -221,7 +218,4 @@ describe("VNFT", function () {
       expect( await contract.supportsInterface("0x80ac58cd")).to.equal(true, "Can't support interface");
     });
   })
-
-  
-
 });
