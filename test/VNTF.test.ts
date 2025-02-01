@@ -45,6 +45,11 @@ describe("VNFT", function () {
       expect(totalSupply).to.equal(1, "Can't mint");
     });
 
+    it("Should NOT mint(insuficcient payment)", async function () {
+      const { contract, owner, otherAccount } = await deployFixture();
+      await expect(contract.mint(1)).to.be.revertedWith('insufficent payment');
+    });
+
     it("Should burn", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
       await contract.mint(1, { value: ethers.parseEther("0.01") });
@@ -217,5 +222,31 @@ describe("VNFT", function () {
       const { contract, owner, otherAccount } = await deployFixture();
       expect( await contract.supportsInterface("0x80ac58cd")).to.equal(true, "Can't support interface");
     });
+
+    it("Should withdraw", async function () {
+      const { contract, owner, otherAccount } = await deployFixture();
+
+      const ownerBalanceBefore = await ethers.provider.getBalance(owner.address);
+      const instance = contract.connect(otherAccount);
+      await instance.mint(1, { value: ethers.parseEther("0.01") });
+
+      await contract.withdraw();
+
+      const contractBalance = await ethers.provider.getBalance(contract); 
+      const ownerBalanceAfter = await ethers.provider.getBalance(owner.address);
+
+      expect(contractBalance).to.equal(0, "Can't withdraw");
+      expect(ownerBalanceAfter).greaterThan(ownerBalanceBefore, "Can't withdraw");
+    });
+
+    it("Should NOT withdraw", async function () {
+      const { contract, owner, otherAccount } = await deployFixture();
+      
+      await contract.mint(1, { value: ethers.parseEther("0.01") });
+
+      const instance = contract.connect(otherAccount);
+      await expect(instance.withdraw()).to.be.revertedWith("You do not have permission");
+    });
+
   })
 });
