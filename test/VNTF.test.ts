@@ -2,7 +2,7 @@ import { expect} from "chai";
 import hre from "hardhat";
 import { ethers } from "hardhat";
 
-describe("VNFT", function () {
+describe("VNFT2", function () {
 
   async function deployFixture() {
 
@@ -15,7 +15,7 @@ describe("VNFT", function () {
     return { contract, owner, otherAccount };
   }
 
-  describe("VNFT Tests", function () {
+  describe("VNFT2 Tests", function () {
 
     it("Should has name", async function () {
       const { contract, owner, otherAccount } = await deployFixture();
@@ -117,7 +117,7 @@ describe("VNFT", function () {
       await contract.mint(1, { value: ethers.parseEther("0.01") });
       const tokenId = 0;
 
-      expect(await contract.tokenURI(tokenId)).to.equal( "https://victoradauto.com.br/nfts/0.json", "Can't get URI metadata");
+      expect(await contract.tokenURI(tokenId)).to.equal( "ipfs://bafybeibftgzddjau7srksoesuqpop5h3j65grore3ythchxxwhowllb6v4/0.json", "Can't get URI metadata");
     });
 
     it("Should NOT has URI metadata", async function () {

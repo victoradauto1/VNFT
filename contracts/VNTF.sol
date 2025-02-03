@@ -12,7 +12,7 @@ contract VFNT is ERC721A {
     }
 
     function mint(uint256 quantity) public payable {
-        require( msg.value >= 0.01 ether, "insufficent payment");
+        require( msg.value >= (0.01 ether* quantity), "insufficent payment");
         _mint(msg.sender, quantity);
     }
 
@@ -28,7 +28,7 @@ contract VFNT is ERC721A {
     }
 
     function _baseURI() internal pure override returns(string memory) {
-        return "https://victoradauto.com.br/nfts/";
+        return "ipfs://bafybeibftgzddjau7srksoesuqpop5h3j65grore3ythchxxwhowllb6v4/";
     }
 
     function tokenURI(uint256 tokenId) public view override(ERC721A) returns(string memory){
