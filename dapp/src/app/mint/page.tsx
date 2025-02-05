@@ -2,6 +2,8 @@
 
 import { ChangeEvent, useEffect, useState } from "react";
 
+import { login, mint } from "../services/Web3Services";
+
 export default function Home() {
   const [wallet, setWallet] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
@@ -18,10 +20,16 @@ export default function Home() {
 
   function btnLoginClick() {
     setMessage("Logging in...");
-    alert("Login");
-    setWallet("0x0123");
-    localStorage.setItem("wallet", "0x0123");
-    setMessage("");
+    login()
+      .then((wallet) => {
+        setWallet(wallet);
+        localStorage.setItem("wallet", wallet);
+        setMessage("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setMessage(err.message);
+      });
   }
 
   function btnLogoutClick() {
@@ -32,15 +40,22 @@ export default function Home() {
   }
 
   function btnMintClick() {
-    alert("mint");
     setMessage("Minting...");
-    setQuantity(1);
+    mint(quantity)
+      .then((tx) => {
+        setMessage("Tx Id: " + tx || "error");
+        setQuantity(1);
+      })
+      .catch((err) => {
+        console.log(err);
+        setMessage(err.message);
+      });
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     const wallet = localStorage.getItem("wallet");
-    if(wallet) setWallet(wallet)
-  }, [])
+    if (wallet) setWallet(wallet);
+  }, []);
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -52,12 +67,11 @@ export default function Home() {
             </button>
           ) : (
             <>
-            <a href={`${process.env.OPENSEA_URL}/{${wallet}}`}>{wallet}</a>
-            <button id="btnLogout" onClick={btnLogoutClick}>
-              Logout
-            </button>
+              <a href={`${process.env.OPENSEA_URL}/{${wallet}}`}>{wallet}</a>
+              <button id="btnLogout" onClick={btnLogoutClick}>
+                Logout
+              </button>
             </>
-            
           )}
         </p>
         {wallet && (

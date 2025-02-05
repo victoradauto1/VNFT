@@ -1,18 +1,16 @@
-import type { Config } from "tailwindcss";
-
-export default {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
+module.exports = {
+  future: {
+    removeDeprecatedGapUtilities: true,
+    purgeLayersByDefault: true,
   },
+  purge: false,
+  theme: {
+    fontFamily: {
+      "display" : ["Noto Sans","sans-serif"],
+      "body" : ["Noto Sans","sans-serif"],
+    },
+    extend: {},
+  },
+  variants: {},
   plugins: [],
-} satisfies Config;
+}

@@ -1,6 +1,4 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+const nextConfig = {
   env: {
     CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS,
     NTF_PRICE: process.env.NTF_PRICE,
@@ -9,4 +7,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
+
