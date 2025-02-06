@@ -30,32 +30,14 @@ function Footer(): ReactElement {
                 Let's keep in touch!
               </h4>
               <h5 className="text-lg mt-0 mb-2 text-gray-700">
-                Find us on any of these platforms, we respond 1-2 business days.
+              Find me on LinkedIn, I respond daily.
               </h5>
               <div className="mt-6">
-                <button
-                  className="bg-white text-blue-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2 p-3"
-                  type="button"
-                >
-                  <i className="flex fab fa-twitter"></i>
-                </button>
-                <button
-                  className="bg-white text-blue-600 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2 p-3"
-                  type="button"
-                >
-                  <i className="flex fab fa-facebook-square"></i>
-                </button>
-                <button
-                  className="bg-white text-pink-400 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2 p-3"
-                  type="button"
-                >
-                  <i className="flex fab fa-dribbble"></i>
-                </button>
                 <button
                   className="bg-white text-gray-900 shadow-lg font-normal h-10 w-10 items-center justify-center align-center rounded-full outline-none focus:outline-none mr-2 p-3"
                   type="button"
                 >
-                  <i className="flex fab fa-github"></i>
+                  <img src="/linkedin-footer.svg" alt="linkedin" />
                 </button>
               </div>
             </div>
@@ -124,12 +106,12 @@ function Footer(): ReactElement {
           <div className="flex flex-wrap items-center md:justify-between justify-center">
             <div className="w-full md:w-4/12 px-4 mx-auto text-center">
               <div className="text-sm text-gray-600 font-semibold py-1">
-                Copyright © {new Date().getFullYear()}{" "}Tailwind Starter Kit by{" "}
+                Copyright © {new Date().getFullYear()}{" "}Victory NFT Colletion{" "}
                 <a
-                  href="https://www.creative-tim.com"
+                  href="https://github.com/victoradauto1"
                   className="text-gray-600 hover:text-gray-900"
                 >
-                  Creative Tim
+                  by Victor Silva
                 </a>.
               </div>
             </div>

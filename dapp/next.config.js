@@ -1,4 +1,5 @@
 const nextConfig = {
+  output: "export",
   env: {
     CONTRACT_ADDRESS: process.env.CONTRACT_ADDRESS,
     NTF_PRICE: process.env.NTF_PRICE,

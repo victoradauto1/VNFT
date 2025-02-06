@@ -1,18 +1,6 @@
 module.exports = {
-    plugins: [
-      'tailwindcss',
-      ...(process.env.NODE_ENV === 'production'
-        ? [
-            ['@fullhuman/postcss-purgecss',
-            {
-              content: [
-                './pages/**/*.{js,jsx,ts,tsx}',
-                './components/**/*.{js,jsx,ts,tsx}',
-              ],
-              defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
-            }]
-          ]
-        : []),
-      'postcss-preset-env',
-    ],
-  };
+  plugins: [
+    'tailwindcss',          // Adiciona o Tailwind CSS
+    'postcss-preset-env',   // Adiciona o postcss-preset-env para recursos modernos de CSS
+  ],
+};

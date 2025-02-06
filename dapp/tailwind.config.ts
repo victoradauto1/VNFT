@@ -3,11 +3,14 @@ module.exports = {
     removeDeprecatedGapUtilities: true,
     purgeLayersByDefault: true,
   },
-  purge: false,
+  content: [
+    './pages/**/*.{js,jsx,ts,tsx}', // Adicione os caminhos para suas páginas
+    './components/**/*.{js,jsx,ts,tsx}', // Adicione os caminhos para seus componentes
+  ],
   theme: {
     fontFamily: {
-      "display" : ["Noto Sans","sans-serif"],
-      "body" : ["Noto Sans","sans-serif"],
+      "display": ["Noto Sans", "sans-serif"],
+      "body": ["Noto Sans", "sans-serif"],
     },
     extend: {},
   },
